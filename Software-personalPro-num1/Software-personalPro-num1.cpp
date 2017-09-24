@@ -1,0 +1,237 @@
+#include <stdio.h>
+
+#include <ctype.h>
+
+#include <time.h>
+
+#include <stdlib.h>
+
+#include <windows.h>
+
+#define IDNO_LENGTH 6
+
+#define CALC_KIND 4
+
+ 
+
+char getSignal();
+
+int getResult(int,int,char);
+
+void  integer();
+void  fraction();
+
+ 
+
+//main函数
+
+void main()
+{
+   
+    int i,n,m;
+  	 printf("**************\n");
+	 printf(" 【出题类型】 \n");
+	 printf("1.整数四则运算\n");
+	 printf("2.分数四则运算\n");
+	 printf("**************\n");
+	 printf("请输入出题类型:");
+	 scanf("%d",&i);  
+     printf("请输入出题数目:");
+    scanf("%d",&n);
+    for(m=1;m<=n;m++)
+    {
+        if(i==1)
+            integer();
+        else
+            fraction();
+	
+    }
+	 
+}
+ 
+
+//获取随机运算符
+
+char getSignal()
+
+{
+
+    char signal[CALC_KIND]={'+','-','*','/'};
+
+    srand((unsigned)time(NULL));
+
+    return signal[rand()%4];
+
+}
+
+ 
+
+//获取随机数
+
+int random(double start, double end)
+
+{
+
+    return (int)(start+(end-start)*rand()/(RAND_MAX+ 1.0));
+
+}
+
+ 
+
+//运算
+
+int getResult(int num1,int num2,char signal)
+
+{
+
+    int res;
+
+    switch(signal)
+
+    {
+
+    case '+':
+
+        res=num1+num2;break;
+
+    case '-':
+
+        res=num1-num2;break;
+
+    case '*':
+
+        res=num1*num2;break;
+
+    case '/':
+
+        res=num1/num2;break;
+
+    default:
+
+        res=0;
+
+        printf("运算符不符合规则\n");
+
+    }
+
+    return res;
+
+}
+
+ 
+
+//整数
+
+void integer()
+{
+
+    int giveRes;
+
+    int num1;
+
+    int num2;
+
+    static int count=0;
+
+    char signal;
+
+   
+    srand((unsigned)time(NULL));
+
+    signal=getSignal();
+
+    num1=random(0,100);
+
+    num2=random(1,100);
+
+ 
+
+    if(signal=='-')
+
+    {
+
+        if(num1<num2)
+
+        {
+
+            int temp;
+
+            temp=num1;
+
+            num1=num2;
+
+            num2=temp;
+
+        }
+
+    }
+
+ 
+
+    if(signal=='/')
+
+    {
+
+        printf("\n(若该题计算结果含余数，请将结果只保留整数部分)\n");
+    }
+
+ 
+
+    printf("%d%c%d=",num1,signal,num2);
+
+    scanf("%d",&giveRes);
+
+    fflush(stdin);
+
+ 
+
+    if(getResult(num1,num2,signal)==giveRes)
+
+		{
+          printf("\nYou're Correct!\n\n");
+		  count++;
+		}
+
+	else
+
+		{
+
+			printf("\nSorry  you're wrong!\n");
+
+			printf("The right answer is：%d\n\n",getResult(num1,num2,signal));
+
+		}
+
+	printf("你一共答对%d道题\n",count);
+}
+//分数
+void fraction()
+{
+    int num1,num2,num3,num4;
+	char signal;
+    num1=rand()%100+1;
+    num2=rand()%100+1;
+    num3=rand()%100+1;
+    num4=rand()%100+1;
+    char op;
+    while(num1<=num2||num3<=num4)
+    {
+        num1=rand()%100+1;
+        num2=rand()%100+1;
+        num3=rand()%100+1;
+        num4=rand()%100+1;
+    }
+      signal=getSignal();
+    if(signal=='-')
+        while((num2*num3-num1*num4)<0)
+        {
+            num1=rand()%100+1;
+            num2=rand()%100+1;
+            num3=rand()%100+1;
+            num4=rand()%100+1;
+        }
+   
+	printf("%d/%d%c%d/%d=\n",num2,num1,signal,num4,num3);
+}
+
+
